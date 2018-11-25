@@ -1,0 +1,33 @@
+{
+  "name": "purescript-bucketchain-history-api-fallback",
+  "license": "MIT",
+  "homepage": "https://github.com/Bucketchain/purescript-bucketchain-history-api-fallback",
+  "authors": [
+    "Shinya Takahashi <s.takahashi313@gmail.com>"
+  ],
+  "description": "A History API fallback middleware of Bucketchain.",
+  "keywords": [
+    "purescript",
+    "webserver",
+    "history-api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Bucketchain/purescript-bucketchain-history-api-fallback.git"
+  },
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-bucketchain": "^0.2.5"
+  },
+  "devDependencies": {
+    "purescript-assert": "^4.0.0"
+  }
+}
