@@ -6,8 +6,16 @@ A History API fallback middleware of [Bucketchain](https://github.com/Bucketchai
 
 ## Installation
 
+### Bower
+
 ```
-bower install purescript-bucketchain-history-api-fallback
+$ bower install purescript-bucketchain-history-api-fallback
+```
+
+### Spago
+
+```
+$ spago install bucketchain-history-api-fallback
 ```
 
 ## Documentation
