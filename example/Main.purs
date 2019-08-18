@@ -3,7 +3,7 @@ module Main where
 import Prelude
 
 import Bucketchain (createServer, listen)
-import Bucketchain.HistoryAPIFallback (withHistoryAPIFallback)
+import Bucketchain.HistoryAPIFallback (defaultIndexDetector, withHistoryAPIFallback)
 import Bucketchain.Http (requestMethod, requestURL, setHeader, setStatusCode)
 import Bucketchain.Middleware (Middleware)
 import Bucketchain.ResponseBody (body)
@@ -17,7 +17,7 @@ main :: Effect Unit
 main = server >>= listen opts
 
 server :: Effect Server
-server = createServer $ withHistoryAPIFallback
+server = createServer $ withHistoryAPIFallback defaultIndexDetector
   <<< middleware1
   <<< middleware2
   <<< middleware3

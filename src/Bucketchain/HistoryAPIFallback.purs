@@ -1,10 +1,12 @@
 module Bucketchain.HistoryAPIFallback
-  ( withHistoryAPIFallback
+  ( IndexDetector
+  , defaultIndexDetector
+  , withHistoryAPIFallback
   ) where
 
 import Prelude
 
-import Bucketchain.Http (Http, requestMethod, requestHeaders, requestURL, setRequestURL)
+import Bucketchain.Http (Http, requestHeaders, requestMethod, requestURL, setRequestURL)
 import Bucketchain.Middleware (Middleware)
 import Control.Monad.Reader (ask)
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -14,21 +16,29 @@ import Effect.Class (liftEffect)
 import Foreign.Object (lookup)
 import Node.URL as URL
 
-withHistoryAPIFallback :: Middleware
-withHistoryAPIFallback next = do
+-- | A type of the index detector.
+type IndexDetector = Http -> String
+
+-- | Always use `/index.html`.
+defaultIndexDetector :: IndexDetector
+defaultIndexDetector = const "/index.html"
+
+-- | Enable fallback for History API.
+withHistoryAPIFallback :: IndexDetector -> Middleware
+withHistoryAPIFallback indexDetector next = do
   http <- ask
-  liftEffect case fallbackPath http of
+  liftEffect case fallbackPath indexDetector http of
     Nothing -> pure unit
     Just url -> setRequestURL http url
   next
 
-fallbackPath :: Http -> Maybe String
-fallbackPath http =
-  (lookup "accept" $ requestHeaders http) >>= indexPath http
+fallbackPath :: IndexDetector -> Http -> Maybe String
+fallbackPath indexDetector http =
+  (lookup "accept" $ requestHeaders http) >>= indexPath indexDetector http
 
-indexPath :: Http -> String -> Maybe String
-indexPath http accept =
-  if shouldFallback then Just "/index.html" else Nothing
+indexPath :: IndexDetector -> Http -> String -> Maybe String
+indexPath indexDetector http accept =
+  if shouldFallback then Just $ indexDetector http else Nothing
   where
     shouldFallback =
       requestMethod http == "GET"
