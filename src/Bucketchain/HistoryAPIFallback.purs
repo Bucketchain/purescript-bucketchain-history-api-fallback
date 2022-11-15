@@ -70,5 +70,5 @@ directFileRequest :: String -> Boolean
 directFileRequest path =
   case lastIndexOf (Pattern ".") path, lastIndexOf (Pattern "/") path of
     Just i1, Just i2 | i1 > i2 -> true
-    Just i1, Nothing -> true
+    Just _, Nothing -> true
     _, _ -> false
